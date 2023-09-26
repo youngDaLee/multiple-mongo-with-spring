@@ -7,7 +7,6 @@ version: '3.7'
 
 services:
   mongo:
-    container_name: mongo-container
     image: mongo:latest
     restart: always
     ports:
@@ -21,22 +20,23 @@ services:
       - ./data:/data/db
 ```
 
+## init-mongo.js
 ```js
-db = db.getSiblingDB('api_dev_db');
+db = db.getSiblingDB('db1');
 db.createUser(
     {
         user: 'selim',
         pwd:  'q12we34r',
-        roles: [{role: 'readWrite', db: 'db_1'}],
+        roles: [{role: 'readWrite', db: 'db1'}],
     }
 );
 
-db = db.getSiblingDB('api_test_db');
+db = db.getSiblingDB('db2');
 db.createUser(
     {
         user: 'selim',
         pwd:  'q12we34r',
-        roles: [{role: 'readWrite', db: 'db_2'}],
+        roles: [{role: 'readWrite', db: 'db2'}],
     }
 );
 ```

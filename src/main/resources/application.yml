@@ -1,0 +1,21 @@
+spring:
+  data:
+    mongodb:
+      db1:
+        host: localhost
+        port: 27017
+        username: selim
+        password: q12we34r
+        authentication-database: db1
+        database: db1
+        field-naming-strategy: org.springframework.data.mapping.model.SnakeCaseFieldNamingStrategy
+      db2:
+        host: localhost
+        port: 27017
+        username: selim2
+        password: q12we34r
+        authentication-database: db2
+        database: db2
+        field-naming-strategy: org.springframework.data.mapping.model.SnakeCaseFieldNamingStrategy
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration

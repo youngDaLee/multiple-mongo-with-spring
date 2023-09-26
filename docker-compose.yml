@@ -2,7 +2,6 @@ version: '3.7'
 
 services:
   mongo:
-    container_name: mongo-container
     image: mongo:latest
     restart: always
     ports:
@@ -10,7 +9,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password
-      MONGO_INITDB_ROOT_DATABASE: root-db
+      MONGO_INITDB_ROOT_DATABASE: admin
     volumes:
       - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
       - ./data:/data/db

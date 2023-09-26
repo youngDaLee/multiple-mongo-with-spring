@@ -1,17 +1,18 @@
-db = db.getSiblingDB('db_1');
+db = db.getSiblingDB("db1")
+
 db.createUser(
     {
         user: 'selim',
         pwd:  'q12we34r',
-        roles: [{role: 'readWrite', db: 'db_1'}],
+        roles: [{role: 'readWrite', db: 'db1'}],
     }
 );
 
-db = db.getSiblingDB('db_2');
+db = db.getSiblingDB("db2")
 db.createUser(
     {
-        user: 'selim',
+        user: 'selim2',
         pwd:  'q12we34r',
-        roles: [{role: 'readWrite', db: 'db_2'}],
+        roles: [{role: 'readWrite', db: 'db2'}],
     }
 );
