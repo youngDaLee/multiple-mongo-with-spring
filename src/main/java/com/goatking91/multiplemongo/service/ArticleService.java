@@ -3,6 +3,7 @@ package com.goatking91.multiplemongo.service;
 import com.goatking91.multiplemongo.dto.ArticleCreateDto;
 import com.goatking91.multiplemongo.dto.ArticleGetDto;
 import com.goatking91.multiplemongo.dto.ArticleGetResult;
+import com.goatking91.multiplemongo.dto.ArticleUpdateDto;
 import com.goatking91.multiplemongo.model.db1.User;
 import com.goatking91.multiplemongo.model.db2.Article;
 import com.goatking91.multiplemongo.repository.db1.UserRepository;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -62,5 +64,33 @@ public class ArticleService {
         );
 
         return ArticleCreateDto.builder().username(user.getName()).title(article.getTitle()).content(article.getContent()).build();
+    }
+
+    public ArticleUpdateDto update(ArticleUpdateDto articleUpdateDto) {
+        ObjectId id = new ObjectId(articleUpdateDto.getArticleId());
+        Optional<Article> articleOptional = articleRepository.findById(id);
+
+        if (articleOptional.isPresent()) {
+            Article article = articleOptional.get();
+
+            Optional<User> userOptional = userRepository.findById(article.getUserId());
+
+            if (userOptional.isEmpty() || !articleUpdateDto.getUsername().equals(userOptional.get().getName())) {
+                throw new RuntimeException("유저 정보가 일치하지 않습니다");
+            }
+
+            article.setTitle(articleUpdateDto.getTitle());
+            article.setContent(articleUpdateDto.getContent());
+            Article res = articleRepository.save(article);
+
+            return ArticleUpdateDto.builder()
+                    .articleId(res.getId().toString())
+                    .username(articleUpdateDto.getUsername())
+                    .title(res.getTitle())
+                    .content(res.getContent())
+                    .build();
+        } else {
+            throw new RuntimeException("해당 id의 article 정보가 존재하지 않습니다");
+        }
     }
 }
