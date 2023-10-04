@@ -19,10 +19,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     public UserCreateDto create(UserCreateDto userCreateDto) {
-//        User user = userRepository.save(User.builder().name(userCreateDto.getName()).build());
-        User user = userRepository.findByName("selim").orElseThrow();
-        user.setName(userCreateDto.getName());
-        userRepository.save(user);
-        return UserCreateDto.builder().build();
+        User user = userRepository.save(User.builder().name(userCreateDto.getName()).build());
+        return UserCreateDto.builder().name(user.getName()).build();
     }
 }
