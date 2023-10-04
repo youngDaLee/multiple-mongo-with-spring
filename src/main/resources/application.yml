@@ -19,3 +19,6 @@ spring:
         field-naming-strategy: org.springframework.data.mapping.model.SnakeCaseFieldNamingStrategy
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration
+
+logging:
+  config: /Users/lee_dayoung/myRepo/multiple-mongo-with-spring/src/main/resources/logback-spring.xml
