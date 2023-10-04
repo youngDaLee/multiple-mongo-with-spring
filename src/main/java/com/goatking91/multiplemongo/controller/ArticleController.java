@@ -1,14 +1,14 @@
 package com.goatking91.multiplemongo.controller;
 
 import com.goatking91.multiplemongo.dto.ArticleCreateDto;
+import com.goatking91.multiplemongo.dto.ArticleGetDto;
+import com.goatking91.multiplemongo.dto.ArticleGetResult;
 import com.goatking91.multiplemongo.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
@@ -18,6 +18,11 @@ import java.net.URI;
 @RequiredArgsConstructor
 public class ArticleController {
     private final ArticleService articleService;
+
+    @GetMapping("")
+    public ResponseEntity<ArticleGetResult> get(ArticleGetDto articleGetDto, Pageable pageable) {
+        return ResponseEntity.ok(articleService.get(articleGetDto, pageable));
+    }
 
     @PostMapping("")
     public ResponseEntity<ArticleCreateDto> create(@RequestBody ArticleCreateDto articleCreateDto) {
