@@ -12,5 +12,16 @@ import org.springframework.data.domain.Page;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ArticleGetResult {
-    Page<Article> data;
+    Page<ArticleData> data;
+
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ArticleData {
+        private String id;
+        private String userName;
+        private String title;
+        private String content;
+    }
 }

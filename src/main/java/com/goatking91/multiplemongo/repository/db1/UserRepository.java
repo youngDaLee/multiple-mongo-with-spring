@@ -10,5 +10,6 @@ import java.util.Optional;
 public interface UserRepository extends MongoRepository<User, ObjectId> {
     Optional<User> findByName(String name);
     List<User> findByNameContains(String name);
+    List<User> findByIdIn(List<ObjectId> ids);
 
 }
