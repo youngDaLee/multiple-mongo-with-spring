@@ -1,9 +1,6 @@
 package com.goatking91.multiplemongo.service;
 
-import com.goatking91.multiplemongo.dto.ArticleCreateDto;
-import com.goatking91.multiplemongo.dto.ArticleGetDto;
-import com.goatking91.multiplemongo.dto.ArticleGetResult;
-import com.goatking91.multiplemongo.dto.ArticleUpdateDto;
+import com.goatking91.multiplemongo.dto.*;
 import com.goatking91.multiplemongo.model.db1.User;
 import com.goatking91.multiplemongo.model.db2.Article;
 import com.goatking91.multiplemongo.repository.db1.UserRepository;
@@ -92,5 +89,26 @@ public class ArticleService {
         } else {
             throw new RuntimeException("해당 id의 article 정보가 존재하지 않습니다");
         }
+    }
+
+    public boolean delete(ArticleDeleteDto articleDeleteDto) {
+        ObjectId id = new ObjectId(articleDeleteDto.getArticleId());
+        Optional<Article> articleOptional = articleRepository.findById(id);
+
+        if (articleOptional.isPresent()) {
+            Article article = articleOptional.get();
+
+            Optional<User> userOptional = userRepository.findById(article.getUserId());
+
+            if (userOptional.isEmpty() || !articleDeleteDto.getUsername().equals(userOptional.get().getName())) {
+                throw new RuntimeException("유저 정보가 일치하지 않습니다");
+            }
+
+            articleRepository.delete(article);
+        } else {
+            throw new RuntimeException("해당 id의 article 정보가 존재하지 않습니다");
+        }
+
+        return true;
     }
 }
