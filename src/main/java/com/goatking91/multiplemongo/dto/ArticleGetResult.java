@@ -6,13 +6,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Slice;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ArticleGetResult {
-    Page<ArticleData> data;
+    Slice<ArticleData> data;
 
     @Data
     @Builder

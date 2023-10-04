@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,20 +25,21 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
 
     public ArticleGetResult get(ArticleGetDto articleGetDto, Pageable pageable) {
-        Page<Article> articles;
+        // slice 사용하여 total count aggregation 삭제 => total cnt, 마지막 페이지는 알 수 없음(feed와 같은 상황에서 성능 개선에 적절)
+        Slice<Article> articles;
 
         if (articleGetDto.getKey().equals("title")) {
             articles = articleRepository.findByTitle(articleGetDto.getValue(), pageable);
         } else if (articleGetDto.getKey().equals("content")) {
             articles = articleRepository.findByContentLike(articleGetDto.getValue(), pageable);
         } else {
-            articles = articleRepository.findAll(pageable);
+            articles = articleRepository.findArticles(pageable);
         }
 
         List<ObjectId> userIds = articles.stream().map(Article::getUserId).collect(Collectors.toList());
         List<User> userList = userRepository.findByIdIn(userIds);
 
-        Page<ArticleGetResult.ArticleData> data = articles.map(article -> {
+        Slice<ArticleGetResult.ArticleData> data = articles.map(article -> {
             User user = userList.stream().filter(user1 -> user1.getId().equals(article.getUserId())).findFirst().orElseThrow();
             return ArticleGetResult.ArticleData.builder()
                     .id(article.getId().toString())
